@@ -11,7 +11,6 @@ const mealDetails = ref()
 onMounted(async () => {
   try {
     const response = await axiosClient.get(`/lookup.php?i=${mealId.value}`)
-    console.log(response.data.meals)
     mealDetails.value = response.data.meals[0]
   } catch (error) {
     console.error('Error searching meals:', error)
@@ -20,7 +19,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- <pre>{{ mealDetails }}</pre> -->
   <div class="container px-5 mx-auto">
     <div class="">
       <div class="text-center mb-10">
@@ -54,23 +52,15 @@ onMounted(async () => {
           :alt="mealDetails?.strMeal"
         />
         <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0 flex flex-col">
-          <div class="flex gap-5 mb-5">
+          <div class="flex flex-wrap gap-5 mb-5">
             <div>
               <h1 class="text-gray-900 text-3xl font-medium mb-1">Ingredients</h1>
               <ul>
                 <div v-for="(el, ind) of new Array(20)" v-bind:key="ind">
                   <li v-if="mealDetails && mealDetails[`strIngredient${ind + 1}`]">
-                    {{ ind + 1 }}. {{ mealDetails[`strIngredient${ind + 1}`] }}
-                  </li>
-                </div>
-              </ul>
-            </div>
-            <div>
-              <h1 class="text-gray-900 text-3xl font-medium mb-1">Measures</h1>
-              <ul>
-                <div v-for="(el, ind) of new Array(20)" v-bind:key="ind">
-                  <li v-if="mealDetails && mealDetails[`strMeasure${ind + 1}`]">
-                    {{ mealDetails[`strMeasure${ind + 1}`] }}
+                    {{ ind + 1 }}. {{ mealDetails[`strIngredient${ind + 1}`] }} ({{
+                      mealDetails[`strMeasure${ind + 1}`]
+                    }})
                   </li>
                 </div>
               </ul>
